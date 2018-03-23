@@ -1,0 +1,20 @@
+{
+  "name": "ecs-tester",
+  "version": "1.0.0",
+  "description": "integration tests using headless chrome and docker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"tests will run here\"",
+    "start": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashdalfthegray/ecs-tester.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yashdalfthegray/ecs-tester/issues"
+  },
+  "homepage": "https://github.com/yashdalfthegray/ecs-tester#readme"
+}
