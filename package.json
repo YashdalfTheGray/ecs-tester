@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/yashdalfthegray/ecs-tester/issues"
   },
-  "homepage": "https://github.com/yashdalfthegray/ecs-tester#readme"
+  "homepage": "https://github.com/yashdalfthegray/ecs-tester#readme",
+  "dependencies": {
+    "faker": "^4.1.0",
+    "jest": "^22.4.3",
+    "puppeteer": "^1.2.0"
+  }
 }
