@@ -1,3 +1,4 @@
+const path = require('path');
 const puppeteer = require('puppeteer');
 const faker = require('faker');
 
@@ -19,7 +20,10 @@ test('this works', async () => {
     await page.goto(getConsoleLink('us-east-1'));
     const content = await page.content();
 
-    console.log(content);
+    await page.screenshot({
+        path: path.resolve(process.cwd(), './artifacts/screenshot.png'),
+        fullPage: true
+    });
 
     expect(content.length).not.toBe(0);
 });
