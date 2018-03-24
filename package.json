@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "npm test"
+    "start": "npm test",
+    "linter": "eslint ."
   },
   "repository": {
     "type": "git",
