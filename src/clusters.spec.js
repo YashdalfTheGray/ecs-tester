@@ -1,10 +1,12 @@
 const path = require('path');
 const puppeteer = require('puppeteer');
-const faker = require('faker');
+// const faker = require('faker');
 
 const { getConsoleLink, setupEnvironment } = require('../util');
 
 let browser;
+
+jest.setTimeout(60 * 1000);
 
 beforeAll(async () => {
     setupEnvironment();
@@ -15,12 +17,29 @@ beforeAll(async () => {
 
 afterAll(() => browser.close());
 
-test('this works', async () => {
+test('navigates to the cluster page', async () => {
+    const {
+        REGION,
+        AWS_ACCOUNT,
+        IAM_USERNAME,
+        IAM_PASSWORD
+    } = process.env;
     const page = await browser.newPage();
 
-    console.log(faker.name.findName());
+    // account or alias page
+    await page.goto(getConsoleLink(REGION));
+    await page.waitForSelector('#resolver_container #resolving_input');
+    await page.type('#resolver_container #resolving_input', AWS_ACCOUNT);
+    await page.click('button#next_button');
 
-    await page.goto(getConsoleLink(process.env.REGION));
+    // IAM login page
+    await page.waitForSelector('#accountFields #username');
+    await page.type('#accountFields #username', IAM_USERNAME);
+    await page.type('#accountFields #password', IAM_PASSWORD);
+    await page.click('a#signin_button');
+
+    // clusters page
+    await page.waitForSelector('awsui-button#create-cluster-button');
     const content = await page.content();
 
     await page.screenshot({
