@@ -2,7 +2,7 @@ const path = require('path');
 const puppeteer = require('puppeteer');
 // const faker = require('faker');
 
-const { getConsoleLink, setupEnvironment } = require('../util');
+const { getConsoleLink, setupEnvironment, login } = require('../util');
 
 let browser;
 
@@ -18,25 +18,7 @@ beforeAll(async () => {
 afterAll(() => browser.close());
 
 test('navigates to the cluster page', async () => {
-    const {
-        REGION,
-        AWS_ACCOUNT,
-        IAM_USERNAME,
-        IAM_PASSWORD
-    } = process.env;
-    const page = await browser.newPage();
-
-    // account or alias page
-    await page.goto(getConsoleLink(REGION));
-    await page.waitForSelector('#resolver_container #resolving_input');
-    await page.type('#resolver_container #resolving_input', AWS_ACCOUNT);
-    await page.click('button#next_button');
-
-    // IAM login page
-    await page.waitForSelector('#accountFields #username');
-    await page.type('#accountFields #username', IAM_USERNAME);
-    await page.type('#accountFields #password', IAM_PASSWORD);
-    await page.click('a#signin_button');
+    const page = await login(browser, getConsoleLink(process.env.REGION));
 
     // clusters page
     await page.waitForSelector('awsui-button#create-cluster-button');
