@@ -24,13 +24,19 @@ To run the tests using Docker, run `docker run -it --name <some_name> --env-file
 
 Once the tests are done running in docker, `docker inspect --format='{{.State.ExitCode}}' <name_set_in_run_command>` to check if they ran successfully. If successful, this should return `0`.
 
+## Puppeteer version
+This project depends specifically on Puppeteer v0.13.0 because of a CSP issue with version 1.0.0 and newer. [This issue on the repository](https://github.com/GoogleChrome/puppeteer/issues/1229) and this [sandbox demo](https://puppeteersandbox.com/S0HVfA1j) has more information.
+
+Until solved, we can't upgrade to the newer versions of Puppeteer. Until then, use the v0.13.0 docs link.
+
 ## Contributing
 
 PRs are welcome! After making changes to the package, make sure that the tests are successful by running `npm test` and the linter is successful by running `npm run linter`.
 
 ## Resources
 
-* [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/v1.2.0/docs/api.md)
+* [Puppeteer v1.2.0 API](https://github.com/GoogleChrome/puppeteer/blob/v1.2.0/docs/api.md)
+* [Puppeteer v0.13.0 API](https://github.com/GoogleChrome/puppeteer/blob/v0.13.0/docs/api.md)
 * [Jest API](https://facebook.github.io/jest/docs/en/getting-started.html)
 * [Expect API](https://facebook.github.io/jest/docs/en/expect.html)
 * [Faker Docs](https://github.com/marak/Faker.js/)
