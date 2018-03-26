@@ -20,20 +20,20 @@ beforeAll(async () => {
         args: ['--no-sandbox']
     });
 
-    consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/clusters');
+    consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/firstRun');
 });
 
 afterAll(() => browser.close());
 
-describe('clusters page', () => {
+describe('first run', () => {
     test('shows up when navigated to', async () => {
         const page = await login(browser, consoleLink);
 
-        // clusters page
-        await page.waitForSelector('awsui-button#create-cluster-button');
+        // firstRun
+        await page.waitForSelector('.first-run-container');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotc.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotfr.png'));
 
         expect(content.length).not.toBe(0);
     });

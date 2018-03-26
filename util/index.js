@@ -2,7 +2,8 @@ const dotenv = require('dotenv');
 const isDocker = require('is-docker');
 
 module.exports = {
-    getConsoleLink: (region, service = 'ecs') => `https://${region}.console.aws.amazon.com/${service}`,
+    getConsoleLink: (region, service, subpath) =>
+        `https://console.aws.amazon.com/${service}/home?region=${region}#${subpath}`,
     setupEnvironment: () => {
         if (!isDocker()) {
             dotenv.config();
@@ -25,5 +26,8 @@ module.exports = {
         await page.click('a#signin_button');
 
         return page;
-    }
+    },
+    screenshot: async (page, path) => (
+        process.env.DEBUG === 'true' ? page.screenshot({ path: path, fullPage: true }) : false
+    )
 };
