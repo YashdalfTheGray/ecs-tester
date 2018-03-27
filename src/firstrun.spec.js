@@ -14,7 +14,7 @@ let consoleLink;
 
 jest.setTimeout(60 * 1000);
 
-beforeAll(async () => {
+beforeEach(async () => {
     setupEnvironment();
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
@@ -23,7 +23,7 @@ beforeAll(async () => {
     consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/firstRun');
 });
 
-afterAll(() => browser.close());
+afterEach(() => browser.close());
 
 describe('first run', () => {
     test('shows up when navigated to', async () => {
@@ -34,6 +34,22 @@ describe('first run', () => {
         const content = await page.content();
 
         await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotfr.png'));
+
+        expect(content.length).not.toBe(0);
+    });
+
+    test('finishes out the first run', async () => {
+        const page = await login(browser, consoleLink);
+
+        // containers page
+        await page.waitForSelector('.first-run-container');
+        await page.click('aws-button[primary-button]');
+
+        // service page
+        await page.waitForSelector('.first-run-service');
+        const content = await page.content();
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotfr1.png'));
 
         expect(content.length).not.toBe(0);
     });

@@ -14,7 +14,7 @@ let consoleLink;
 
 jest.setTimeout(60 * 1000);
 
-beforeAll(async () => {
+beforeEach(async () => {
     setupEnvironment();
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
@@ -23,7 +23,7 @@ beforeAll(async () => {
     consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/clusters');
 });
 
-afterAll(() => browser.close());
+afterEach(() => browser.close());
 
 describe('clusters page', () => {
     test('shows up when navigated to', async () => {
