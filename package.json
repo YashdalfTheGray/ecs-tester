@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "npm test",
-    "linter": "eslint ."
+    "linter": "eslint .",
+    "clean": "npx rimraf artifacts/screenshot*"
   },
   "repository": {
     "type": "git",
