@@ -12,7 +12,7 @@ const {
 let browser;
 let consoleLink;
 
-jest.setTimeout(60 * 1000);
+jest.setTimeout(600 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
@@ -47,10 +47,26 @@ describe('first run', () => {
 
         // service page
         await page.waitForSelector('.first-run-service');
-        const content = await page.content();
+        await page.click('aws-button[primary-button]');
+
+        // cluster page
+        await page.waitForSelector('.first-run-cluster');
+        await page.click('aws-button[primary-button]');
+
+        // review page
+        await page.waitForSelector('.first-run-review');
+        await page.click('aws-button[primary-button]');
+
+        // launch page
+        await page.waitForSelector('.first-run-launch');
+        await page.waitFor(
+            () => !document.querySelectorAll('span.awsui-spinner').length,
+            { timeout: 300 * 1000 }
+        );
+        const errors = await page.$$('.awsui-icon.alert-exclamation-circle');
 
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-first-run.png'));
 
-        expect(content.length).not.toBe(0);
+        expect(errors).toHaveLength(0);
     });
 });
