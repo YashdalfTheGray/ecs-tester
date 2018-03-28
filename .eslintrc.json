@@ -3,6 +3,9 @@
   "plugins": [
     "import"
   ],
+  "env": {
+    "browser": true
+  },
   "rules": {
     "brace-style": ["error", "stroustrup"],
     "class-methods-use-this": ["off"],
