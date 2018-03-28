@@ -33,7 +33,7 @@ describe('first run', () => {
         await page.waitForSelector('.first-run-container');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotfr.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/first-run.png'));
 
         expect(content.length).not.toBe(0);
     });
@@ -49,7 +49,7 @@ describe('first run', () => {
         await page.waitForSelector('.first-run-service');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotfr1.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-first-run.png'));
 
         expect(content.length).not.toBe(0);
     });

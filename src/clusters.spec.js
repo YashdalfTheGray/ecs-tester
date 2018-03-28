@@ -33,7 +33,7 @@ describe('clusters page', () => {
         await page.waitForSelector('awsui-button#create-cluster-button');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/screenshotc.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/clusters-page.png'));
 
         expect(content.length).not.toBe(0);
     });
