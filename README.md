@@ -24,6 +24,10 @@ To run the tests using Docker, run `docker run -it --name <some_name> --env-file
 
 Once the tests are done running in docker, `docker inspect --format='{{.State.ExitCode}}' <name_set_in_run_command>` to check if they ran successfully. If successful, this should return `0`.
 
+Screenshots are taken at the end of the tests if the `DEBUG` environment variable is set to `true`. The screenshots get saved in `./artifacts` while running locally and they get saved inside the container while running with Docker. To get started, run `docker diff <name_set_in_run_command>` and you'll see what screenshots were created.
+
+You can access the screenshots by copying them out of the container and onto your host machine by running `docker cp <name_set_in_run_command>:/usr/app/artifacts <path_on_host>`. This will copy the entire folder of screenshots. 
+
 ## Puppeteer version
 This project depends specifically on Puppeteer v0.13.0 because of a CSP issue with version 1.0.0 and newer. [This issue on the repository](https://github.com/GoogleChrome/puppeteer/issues/1229) and this [sandbox demo](https://puppeteersandbox.com/S0HVfA1j) has more information.
 

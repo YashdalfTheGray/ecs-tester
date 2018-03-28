@@ -14,12 +14,12 @@ RUN dpkg -i dumb-init_*.deb
 ENTRYPOINT ["dumb-init", "--"]
 
 # install the node stuff
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /usr/app
+WORKDIR /usr/app
 
-COPY package.json /usr/src/app/
+COPY package.json /usr/app/
 RUN npm install
 
-COPY . /usr/src/app
+COPY . /usr/app
 
 CMD ["npm", "test"]
