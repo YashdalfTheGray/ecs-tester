@@ -25,20 +25,28 @@ beforeEach(async () => {
 
 afterEach(() => browser.close());
 
-describe('first run', () => {
+describe('fargate first run', () => {
     test('shows up when navigated to', async () => {
+        if (process.env.REGION !== 'us-east-1') {
+            return;
+        }
+
         const page = await login(browser, consoleLink);
 
         // firstRun
         await page.waitForSelector('.first-run-container');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/first-run.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/fargate-firstrun.png'));
 
         expect(content.length).not.toBe(0);
     });
 
-    test('finishes out the first run', async () => {
+    test('finishes out the process', async () => {
+        if (process.env.REGION !== 'us-east-1') {
+            return;
+        }
+
         const page = await login(browser, consoleLink);
 
         // containers page
@@ -65,7 +73,7 @@ describe('first run', () => {
         );
         const errors = await page.$$('.awsui-icon.alert-exclamation-circle');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-first-run.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-fargate-firstrun.png'));
 
         expect(errors).toHaveLength(0);
     });

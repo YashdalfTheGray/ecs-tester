@@ -7,7 +7,7 @@
     "test": "jest",
     "start": "npm test",
     "linter": "eslint .",
-    "clean": "npx rimraf artifacts/screenshot*"
+    "clean": "npx rimraf artifacts/*.png"
   },
   "repository": {
     "type": "git",
