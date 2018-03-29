@@ -17,6 +17,11 @@ jest.setTimeout(600 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
+    // browser = await puppeteer.launch({
+    //     args: ['--no-sandbox'],
+    //     headless: false,
+    //     sloMo: 5000
+    // });
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
     });
@@ -34,7 +39,6 @@ describe('ec2 first run', () => {
 
         const page = await login(browser, consoleLink);
 
-        // firstRun
         await page.waitForSelector('[create-first-task-definition-v2]');
         const content = await page.content();
 
@@ -50,11 +54,24 @@ describe('ec2 first run', () => {
 
         const page = await login(browser, consoleLink);
 
-        // firstRun
+        // task def page
         await page.waitForSelector('[create-first-task-definition-v2]');
+        await page.click('.aws-button .btn-primary');
+
+        // service page
+        await page.waitForSelector('[configure-runtime-v2]');
+        await page.click('.aws-button .btn-primary');
+
+        // cluster page
+        await page.waitForSelector('[configure-cluster-v2]');
+        await page.waitFor(1000);
+        await page.click('.aws-button .btn-primary');
+
+        // review page
+        await page.waitForSelector('[review-first-run-v2]');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-firstrun.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
 
         expect(content.length).not.toBe(0);
     });

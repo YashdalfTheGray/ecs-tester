@@ -34,7 +34,6 @@ describe('fargate first run', () => {
 
         const page = await login(browser, consoleLink);
 
-        // firstRun
         await page.waitForSelector('.first-run-container');
         const content = await page.content();
 
