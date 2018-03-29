@@ -6,7 +6,8 @@ const {
     getConsoleLink,
     setupEnvironment,
     login,
-    screenshot
+    screenshot,
+    isFargateRegion
 } = require('../util');
 
 let browser;
@@ -27,7 +28,7 @@ afterEach(() => browser.close());
 
 describe('fargate first run', () => {
     test('shows up when navigated to', async () => {
-        if (process.env.REGION !== 'us-east-1') {
+        if (!isFargateRegion(process.env.REGION)) {
             return;
         }
 
@@ -43,7 +44,7 @@ describe('fargate first run', () => {
     });
 
     test('finishes out the process', async () => {
-        if (process.env.REGION !== 'us-east-1') {
+        if (!isFargateRegion(process.env.REGION)) {
             return;
         }
 
