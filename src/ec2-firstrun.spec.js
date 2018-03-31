@@ -64,15 +64,24 @@ describe('ec2 first run', () => {
 
         // cluster page
         await page.waitForSelector('[configure-cluster-v2]');
-        await page.waitFor(1000);
+        await page.waitFor(1000); // because we disable our buttons
         await page.click('.aws-button .btn-primary');
 
         // review page
         await page.waitForSelector('[review-first-run-v2]');
-        const content = await page.content();
+        await page.waitFor(1000); // because another disabled button
+        await page.click('.aws-button .btn-primary');
+
+        // launch page
+        await page.waitForSelector('[wizard-launch-status]');
+        await page.waitFor(
+            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
+            { timeout: 300 * 1000 }
+        );
+        const errors = await page.$$('awsui-alert[type="error"]');
 
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
 
-        expect(content.length).not.toBe(0);
+        expect(errors).toHaveLength(0);
     });
 });
