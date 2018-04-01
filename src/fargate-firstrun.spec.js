@@ -7,7 +7,8 @@ const {
     setupEnvironment,
     login,
     screenshot,
-    isFargateRegion
+    isFargateRegion,
+    addToManifest
 } = require('../util');
 
 let browser;
@@ -69,10 +70,13 @@ describe('fargate first run', () => {
         await page.waitForSelector('.first-run-launch');
         await page.waitFor(
             () => !document.querySelectorAll('span.awsui-spinner').length,
-            { timeout: 300 * 1000 }
+            { timeout: 450 * 1000 }
         );
         const errors = await page.$$('.awsui-icon.alert-exclamation-circle');
 
+        await addToManifest('taskDefinition', 'first-run-task-definition');
+        await addToManifest('cluster', 'default');
+        await addToManifest('service', 'sample-app-service');
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-fargate-firstrun.png'));
 
         expect(errors).toHaveLength(0);

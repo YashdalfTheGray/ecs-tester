@@ -7,7 +7,8 @@ const {
     setupEnvironment,
     login,
     screenshot,
-    isFargateRegion
+    isFargateRegion,
+    addToManifest
 } = require('../util');
 
 let browser;
@@ -17,11 +18,6 @@ jest.setTimeout(600 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
-    // browser = await puppeteer.launch({
-    //     args: ['--no-sandbox'],
-    //     headless: false,
-    //     sloMo: 5000
-    // });
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
     });
@@ -76,10 +72,13 @@ describe('ec2 first run', () => {
         await page.waitForSelector('[wizard-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 300 * 1000 }
+            { timeout: 450 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
+        await addToManifest('taskDefinition', 'console-sample-app-static');
+        await addToManifest('cluster', 'default');
+        await addToManifest('service', 'sample-webapp');
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
 
         expect(errors).toHaveLength(0);
