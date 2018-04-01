@@ -2,8 +2,11 @@ const dotenv = require('dotenv');
 const isDocker = require('is-docker');
 
 const login = require('./login');
+const addToManifest = require('./addToManifest');
 
 module.exports = {
+    login: login,
+    addToManifest: addToManifest,
     getConsoleLink: (region, service, subpath) =>
         `https://console.aws.amazon.com/${service}/home?region=${region}#${subpath}`,
     setupEnvironment: () => {
@@ -14,6 +17,5 @@ module.exports = {
     screenshot: async (page, path) => (
         process.env.DEBUG === 'true' ? page.screenshot({ path: path, fullPage: true }) : false
     ),
-    isFargateRegion: region => ['us-east-1'].includes(region),
-    login: login
+    isFargateRegion: region => ['us-east-1'].includes(region)
 };
