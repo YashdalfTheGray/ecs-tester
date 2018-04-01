@@ -15,6 +15,12 @@
     "max-len": ["warn", 160],
     "no-console": ["off"],
     "no-param-reassign": ["error"],
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "minProperties": 5, "multiline": true, "consistent": true },
+      "ObjectPattern": { "minProperties": 5, "multiline": true, "consistent": true },
+      "ImportDeclaration": { "minProperties": 5, "multiline": true, "consistent": true },
+      "ExportDeclaration": { "minProperties": 5, "multiline": true, "consistent": true }
+    }],
     "object-shorthand": ["error", "consistent-as-needed"]
   }
 }
