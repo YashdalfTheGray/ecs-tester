@@ -44,6 +44,7 @@ describe('clusters page', () => {
             return;
         }
 
+        const clusterName = `cluster-${Date.now()}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -52,10 +53,25 @@ describe('clusters page', () => {
 
         // cluster type page
         await page.waitForSelector('aws-button[primary-button]');
-        const content = await page.content();
+        await page.click('aws-button[primary-button]');
 
+        // create cluster page
+        await page.waitForSelector('awsui-select[items="role.options"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('awsui-checkbox#create-cluster-empty-checkbox');
+        await page.click('aws-button[primary-button]');
+
+        // launch status page
+        await page.waitForSelector('[configure-cluster-launch-status]');
+        await page.waitFor(
+            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
+            { timeout: 5 * 1000 }
+        );
+        const errors = await page.$$('awsui-alert[type="error"]');
+
+        await addToManifest('cluster', clusterName);
         await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-ec2-cluster.png'));
 
-        expect(content.length).not.toBe(0);
+        expect(errors).toHaveLength(0);
     });
 });
