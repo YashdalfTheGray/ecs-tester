@@ -14,7 +14,7 @@ const {
 let browser;
 let consoleLink;
 
-jest.setTimeout(60 * 1000);
+jest.setTimeout(600 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
@@ -71,6 +71,77 @@ describe('clusters page', () => {
 
         await addToManifest('cluster', clusterName);
         await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-ec2-cluster.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
+    test('creates an empty cluster in fargate region', async () => {
+        if (!isFargateRegion(process.env.REGION)) {
+            return;
+        }
+
+        const clusterName = `cluster-${Date.now()}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('aws-button[primary-button]');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-control-group[label="Create VPC"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('aws-button[primary-button]');
+
+        // launch status page
+        await page.waitForSelector('[configure-cluster-launch-status]');
+        await page.waitFor(
+            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
+            { timeout: 300 * 1000 }
+        );
+        const errors = await page.$$('awsui-alert[type="error"]');
+
+        await addToManifest('cluster', clusterName);
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-fargate-cluster.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
+    test('creates a cluster in fargate region', async () => {
+        if (!isFargateRegion(process.env.REGION)) {
+            return;
+        }
+
+        const clusterName = `cluster-${Date.now()}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('aws-button[primary-button]');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-control-group[label="Create VPC"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('awsui-control-group[label="Create VPC"] awsui-checkbox');
+        await page.click('aws-button[primary-button]');
+
+        // launch status page
+        await page.waitForSelector('[configure-cluster-launch-status]');
+        await page.waitFor(
+            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
+            { timeout: 300 * 1000 }
+        );
+        const errors = await page.$$('awsui-alert[type="error"]');
+
+        await addToManifest('cluster', clusterName);
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/fargate-cluster.png'));
 
         expect(errors).toHaveLength(0);
     });
