@@ -1,6 +1,5 @@
 const path = require('path');
 const puppeteer = require('puppeteer');
-// const faker = require('faker');
 
 const {
     getConsoleLink,

@@ -1,6 +1,6 @@
 const path = require('path');
 const puppeteer = require('puppeteer');
-// const faker = require('faker');
+const { hacker } = require('faker');
 
 const {
     getConsoleLink,
@@ -44,7 +44,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${Date.now()}`;
+        const clusterName = `cluster-${hacker.noun()}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -80,7 +80,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${Date.now()}`;
+        const clusterName = `cluster-${hacker.noun()}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -115,7 +115,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${Date.now()}`;
+        const clusterName = `cluster-${hacker.noun()}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -150,7 +150,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${Date.now()}`;
+        const clusterName = `cluster-${hacker.noun()}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
