@@ -100,7 +100,7 @@ describe('clusters page', () => {
         await page.waitForSelector('[configure-cluster-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 5 * 1000 }
+            { timeout: 300 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
@@ -110,7 +110,7 @@ describe('clusters page', () => {
         expect(errors).toHaveLength(0);
     });
 
-    test('creates an empty cluster in fargate region', async () => {
+    test('creates an empty fargate cluster in fargate region', async () => {
         if (!isFargateRegion(process.env.REGION)) {
             return;
         }
@@ -135,7 +135,7 @@ describe('clusters page', () => {
         await page.waitForSelector('[configure-cluster-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 300 * 1000 }
+            { timeout: 5 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
@@ -145,7 +145,7 @@ describe('clusters page', () => {
         expect(errors).toHaveLength(0);
     });
 
-    test('creates a cluster in fargate region', async () => {
+    test('creates a fargate cluster in fargate region', async () => {
         if (!isFargateRegion(process.env.REGION)) {
             return;
         }
@@ -177,6 +177,79 @@ describe('clusters page', () => {
 
         await addToManifest('cluster', clusterName);
         await screenshot(page, path.resolve(process.cwd(), './artifacts/fargate-cluster.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
+    test('creates an empty ec2 cluster in fargate region', async () => {
+        if (!isFargateRegion(process.env.REGION)) {
+            return;
+        }
+
+        const clusterName = `cluster-${hacker.noun()}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('aws-button[primary-button]');
+        await page.click('div#create-cluster-ec2-card');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-select[items="role.options"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('awsui-checkbox#create-cluster-empty-checkbox');
+        await page.click('aws-button[primary-button]');
+
+        // launch status page
+        await page.waitForSelector('[configure-cluster-launch-status]');
+        await page.waitFor(
+            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
+            { timeout: 5 * 1000 }
+        );
+        const errors = await page.$$('awsui-alert[type="error"]');
+
+        await addToManifest('cluster', clusterName);
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-ec2-cluster.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
+    test('creates a ec2 cluster in fargate region', async () => {
+        if (!isFargateRegion(process.env.REGION)) {
+            return;
+        }
+
+        const clusterName = `cluster-${hacker.noun()}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('aws-button[primary-button]');
+        await page.click('div#create-cluster-ec2-card');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-select[items="role.options"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('aws-button[primary-button]');
+
+        // launch status page
+        await page.waitForSelector('[configure-cluster-launch-status]');
+        await page.waitFor(
+            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
+            { timeout: 300 * 1000 }
+        );
+        const errors = await page.$$('awsui-alert[type="error"]');
+
+        await addToManifest('cluster', clusterName);
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-cluster.png'));
 
         expect(errors).toHaveLength(0);
     });
