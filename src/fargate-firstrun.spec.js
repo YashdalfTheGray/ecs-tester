@@ -13,7 +13,7 @@ const {
 let browser;
 let consoleLink;
 
-jest.setTimeout(600 * 1000);
+jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
@@ -69,7 +69,7 @@ describe('fargate first run', () => {
         await page.waitForSelector('.first-run-launch');
         await page.waitFor(
             () => !document.querySelectorAll('span.awsui-spinner').length,
-            { timeout: 450 * 1000 }
+            { timeout: 600 * 1000 }
         );
         const errors = await page.$$('.awsui-icon.alert-exclamation-circle');
 

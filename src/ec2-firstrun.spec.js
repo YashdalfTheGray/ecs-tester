@@ -13,7 +13,7 @@ const {
 let browser;
 let consoleLink;
 
-jest.setTimeout(600 * 1000);
+jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
@@ -71,7 +71,7 @@ describe('ec2 first run', () => {
         await page.waitForSelector('[wizard-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 450 * 1000 }
+            { timeout: 600 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
