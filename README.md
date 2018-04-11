@@ -27,20 +27,24 @@ Once the tests are done running in docker, `docker inspect --format='{{.State.Ex
 
 Screenshots are taken at the end of the tests if the `DEBUG` environment variable is set to `true`. The screenshots get saved in `./artifacts` while running locally and they get saved inside the container while running with Docker. To get started, run `docker diff <name_set_in_run_command>` and you'll see what screenshots were created.
 
-You can access the screenshots by copying them out of the container and onto your host machine. Run `docker cp <name_set_in_run_command>:/usr/app/artifacts <path_on_host>` to copy the entire folder of screenshots.
+A file called `artifacts/manifest.json` also gets created every time a create flow test is run. It is there to detail what resources the tests have created in the AWS account for easy identification.
+
+You can access the screenshots and the manifest file by copying them out of the container and onto your host machine. Run `docker cp <name_set_in_run_command>:/usr/app/artifacts <path_on_host>` to copy the entire folder of screenshots.
 
 ## Focusing tests
 
-Jest parallelizes the tests that it runs so it doesn't know up front what tests to run or which ones to not. You can use `describe.only` or `test.only` to focus tests within the same module but Jest will still run the other test modules. To specifically focus on one module, run `npm test -- -t "<name_of_describe>"`. The `-t` flag only runs one spec. 
+Jest parallelizes the tests that it runs so it doesn't know up front what tests to run or which ones to not. You can use `describe.only` or `test.only` to focus tests within the same module but Jest will still run the other test modules. To specifically focus on one module, run `npm test -- -t "<name_of_describe>"`. The `-t` flag only runs one spec.
 
 ## Puppeteer version
 This project depends specifically on Puppeteer v0.13.0 because of a CSP issue with version 1.0.0 and newer. [This issue on the repository](https://github.com/GoogleChrome/puppeteer/issues/1229) and this [sandbox demo](https://puppeteersandbox.com/S0HVfA1j) has more information.
 
-Until solved, we can't upgrade to the newer versions of Puppeteer. Until then, use the v0.13.0 docs link.
+Until solved, we can't upgrade to the newer versions of Puppeteer and will have to use the v0.13.0 docs. The next version of Puppeteer, v1.3.0, is expected to be released on 4/12/2018 which will include a way to ignore the CSP policies on the page.
 
 ## Contributing
 
 PRs are welcome! After making changes to the package, make sure that the tests are successful by running `npm test` and the linter is successful by running `npm run linter`.
+
+Check the [contributing guide](.github/CONTRIBUTING.md) for more information. 
 
 ## Resources
 
