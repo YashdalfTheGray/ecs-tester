@@ -19,9 +19,17 @@ Once you have this created, you can either run `npm install` to install all the 
 
 ## Running the tests
 
+### Docker easy mode
+
+All you need to do is create the `.env` file like shown above _somewhere_ on your local machine. Then run `docker run -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester`. This will automatically pull the image from DockerHub and run all the tests in the test suite. You can then use the docker commands in results section to peek at the results. 
+
+### Locally/Build-Your-Own Docker Image
+
 To run the tests locally, follow the steps above and run `npm test`. This will run the Jest tests using Puppeteer and Chromium headless. Any screenshots will be in the `artifacts` folder.
 
 To run the tests using Docker, run `docker run -it --name <some_name> --env-file .env ecs-tester`. Since the container is running in interactive mode, it will print the test results as they happen.
+
+## Results
 
 Once the tests are done running in docker, `docker inspect --format='{{.State.ExitCode}}' <name_set_in_run_command>` to check if they ran successfully. If successful, this should return `0`.
 
@@ -44,7 +52,7 @@ Until solved, we can't upgrade to the newer versions of Puppeteer and will have 
 
 PRs are welcome! After making changes to the package, make sure that the tests are successful by running `npm test` and the linter is successful by running `npm run linter`.
 
-Check the [contributing guide](.github/CONTRIBUTING.md) for more information. 
+Check the [contributing guide](.github/CONTRIBUTING.md) for more information.
 
 ## Resources
 
