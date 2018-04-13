@@ -1,0 +1,33 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "nginx",
+      "image": "nginx",
+      "memoryReservation": "256",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": "80",
+          "containerPort": "80",
+          "protocol": "tcp"
+        }
+      ],
+      "environment": null,
+      "mountPoints": null,
+      "volumesFrom": null,
+      "hostname": null,
+      "user": null,
+      "workingDirectory": null,
+      "extraHosts": null,
+      "logConfiguration": null,
+      "ulimits": null,
+      "dockerLabels": null
+    }
+  ],
+  "volumes": [],
+  "networkMode": "awsvpc",
+  "memory": "512",
+  "cpu": "256",
+  "placementConstraints": [],
+  "family": "ecs-tester-taskdef"
+}
