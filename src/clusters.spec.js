@@ -14,7 +14,7 @@ const {
 let browser;
 let consoleLink;
 
-jest.setTimeout(600 * 1000);
+jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
     setupEnvironment();
@@ -100,7 +100,7 @@ describe('clusters page', () => {
         await page.waitForSelector('[configure-cluster-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 300 * 1000 }
+            { timeout: 600 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
@@ -171,7 +171,7 @@ describe('clusters page', () => {
         await page.waitForSelector('[configure-cluster-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 300 * 1000 }
+            { timeout: 600 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
@@ -244,7 +244,7 @@ describe('clusters page', () => {
         await page.waitForSelector('[configure-cluster-launch-status]');
         await page.waitFor(
             () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 300 * 1000 }
+            { timeout: 600 * 1000 }
         );
         const errors = await page.$$('awsui-alert[type="error"]');
 
