@@ -21,7 +21,7 @@ Once you have this created, you can either run `npm install` to install all the 
 
 ### Docker easy mode
 
-All you need to do is create the `.env` file like shown above _somewhere_ on your local machine. Then run `docker run -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester`. This will automatically pull the image from DockerHub and run all the tests in the test suite. You can then use the docker commands in results section to peek at the results. 
+All you need to do is create the `.env` file like shown above _somewhere_ on your local machine. Then run `docker run -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester`. This will automatically pull the image from DockerHub and run all the tests in the test suite. You can then use the docker commands in results section to peek at the results.
 
 ### Locally/Build-Your-Own Docker Image
 
@@ -46,7 +46,7 @@ Jest parallelizes the tests that it runs so it doesn't know up front what tests 
 ## Puppeteer version
 This project depends specifically on Puppeteer v0.13.0 because of a CSP issue with version 1.0.0 and newer. [This issue on the repository](https://github.com/GoogleChrome/puppeteer/issues/1229) and this [sandbox demo](https://puppeteersandbox.com/S0HVfA1j) has more information.
 
-Until solved, we can't upgrade to the newer versions of Puppeteer and will have to use the v0.13.0 docs. The next version of Puppeteer, v1.3.0, is expected to be released on 4/12/2018 which will include a way to ignore the CSP policies on the page.
+Until solved, we can't upgrade to the newer versions of Puppeteer and will have to use the v0.13.0 docs. The new version of Puppeteer, v1.3.0, has a new build of Chromium that breaks the main AWS sign-in page so that has to be debugged before the new version can be adopted. An issue has been created. 
 
 ## Contributing
 
