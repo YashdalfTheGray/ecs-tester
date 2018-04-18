@@ -15,6 +15,7 @@
     "max-len": ["warn", 160],
     "no-console": ["off"],
     "no-param-reassign": ["error"],
+    "no-use-before-define": ["off"],
     "object-curly-newline": ["error", {
       "ObjectExpression": { "minProperties": 5, "multiline": true, "consistent": true },
       "ObjectPattern": { "minProperties": 5, "multiline": true, "consistent": true },
