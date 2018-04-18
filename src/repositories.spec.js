@@ -4,7 +4,6 @@ const { hacker } = require('faker');
 
 const {
     getConsoleLink,
-    setupEnvironment,
     login,
     screenshot,
     addToManifest
@@ -16,7 +15,6 @@ let consoleLink;
 jest.setTimeout(300 * 1000);
 
 beforeEach(async () => {
-    setupEnvironment();
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
     });

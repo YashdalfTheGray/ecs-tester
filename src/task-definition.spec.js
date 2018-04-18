@@ -5,7 +5,6 @@ const taskDefSample = require('../util/sample-taskdef.json');
 
 const {
     getConsoleLink,
-    setupEnvironment,
     login,
     screenshot,
     isFargateRegion,
@@ -18,7 +17,6 @@ let consoleLink;
 jest.setTimeout(300 * 1000);
 
 beforeEach(async () => {
-    setupEnvironment();
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
     });

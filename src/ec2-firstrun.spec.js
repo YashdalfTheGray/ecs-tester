@@ -3,7 +3,6 @@ const puppeteer = require('puppeteer');
 
 const {
     getConsoleLink,
-    setupEnvironment,
     login,
     screenshot,
     isFargateRegion,
@@ -16,7 +15,6 @@ let consoleLink;
 jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
-    setupEnvironment();
     browser = await puppeteer.launch({
         args: ['--no-sandbox']
     });
