@@ -42,7 +42,15 @@ describe('repositories page', () => {
 
         // repositories page
         await page.waitForSelector('awsui-button#create-repository-button');
-        await page.click('awsui-button#create-repository-button');
+        const ecrPictures = await page.$$('.ecr-key-function-img');
+        if (ecrPictures.length > 0) {
+            // on the get started page
+            await page.click('awsui-button[text="Get Started"]');
+        }
+        else {
+            // on the list repositories page
+            await page.click('awsui-button#create-repository-button');
+        }
 
         // create repository page
         await page.waitForSelector('awsui-textfield[ng-model="wizardValues.repositoryName"]');
