@@ -5,12 +5,14 @@ Integration testing with Puppeteer, Chromium headless, Jest and Docker!
 
 This project relies on Docker but can also be run outside of Docker. You will need Docker CE and/or a Node.js 8 or newer and npm v5 or newer to run this project.
 
-The first thing to do is to create an IAM user with appropriate rights in your console so that the tests can log on as a user. Then create a file in this directory called `.env` and add five keys to it. The keys are listed below. The region follows the standard AWS region code format, eg. `us-east-1`.
+The first thing to do is to create an IAM user with appropriate rights in your console so that the tests can log on as a user. Then create a file in this directory called `.env` and add seven keys to it. The keys are listed below. The region follows the standard AWS region code format, eg. `us-east-1`.
 
 ```
 AWS_ACCOUNT=<your_account_id_or_alias>
 IAM_USERNAME=<your_iam_username>
 IAM_PASSWORD=<your_iam_password>
+ACCESS_KEY_ID=<your_access_key_id>
+SECRET_ACCESS_KEY=<your_secret_access_key>
 REGION=<aws_region>
 DEBUG=false
 ```
@@ -46,7 +48,7 @@ Jest parallelizes the tests that it runs so it doesn't know up front what tests 
 ## Puppeteer version
 This project depends specifically on Puppeteer v0.13.0 because of a CSP issue with version 1.0.0 and newer. [This issue on the repository](https://github.com/GoogleChrome/puppeteer/issues/1229) and this [sandbox demo](https://puppeteersandbox.com/S0HVfA1j) has more information.
 
-Until solved, we can't upgrade to the newer versions of Puppeteer and will have to use the v0.13.0 docs. The new version of Puppeteer, v1.3.0, has a new build of Chromium that breaks the main AWS sign-in page so that has to be debugged before the new version can be adopted. An issue has been created. 
+Until solved, we can't upgrade to the newer versions of Puppeteer and will have to use the v0.13.0 docs. The new version of Puppeteer, v1.3.0, has a new build of Chromium that breaks the main AWS sign-in page so that has to be debugged before the new version can be adopted. An issue has been created.
 
 ## Contributing
 
