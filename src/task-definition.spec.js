@@ -7,7 +7,6 @@ const {
     getConsoleLink,
     login,
     screenshot,
-    isFargateRegion,
     addToManifest
 } = require('../util');
 
@@ -39,7 +38,7 @@ describe('taskdef page', () => {
     });
 
     test('creates a new task def revision in non-fargate region', async () => {
-        if (isFargateRegion(process.env.REGION)) {
+        if (process.env.USE_FARGATE) {
             return;
         }
 
@@ -74,7 +73,7 @@ describe('taskdef page', () => {
     });
 
     test('creates a new task def revision in fargate region', async () => {
-        if (!isFargateRegion(process.env.REGION)) {
+        if (!process.env.USE_FARGATE) {
             return;
         }
 

@@ -18,6 +18,5 @@ module.exports = {
     },
     screenshot: async (page, path) => (
         process.env.DEBUG === 'true' ? page.screenshot({ path: path, fullPage: true }) : false
-    ),
-    isFargateRegion: region => ['us-east-1'].includes(region)
+    )
 };

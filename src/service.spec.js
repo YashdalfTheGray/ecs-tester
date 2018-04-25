@@ -6,7 +6,6 @@ const {
     getConsoleLink,
     login,
     screenshot,
-    isFargateRegion,
     addToManifest
 } = require('../util');
 
@@ -29,7 +28,7 @@ afterEach(() => browser.close());
 
 describe.skip('services page', () => {
     test('creates a service in a non-fargate region', async () => {
-        if (isFargateRegion(process.env.REGION)) {
+        if (process.env.USE_FARGATE) {
             return;
         }
 
@@ -64,7 +63,7 @@ describe.skip('services page', () => {
     });
 
     test('creates a fargate service in fargate region', async () => {
-        if (!isFargateRegion(process.env.REGION)) {
+        if (!process.env.USE_FARGATE) {
             return;
         }
 
@@ -100,7 +99,7 @@ describe.skip('services page', () => {
     });
 
     test('creates an ec2 service in fargate region', async () => {
-        if (!isFargateRegion(process.env.REGION)) {
+        if (!process.env.USE_FARGATE) {
             return;
         }
 
