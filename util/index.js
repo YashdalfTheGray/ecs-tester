@@ -16,6 +16,7 @@ module.exports = {
             dotenv.config();
         }
     },
+    isFargateRegion: () => process.env.USE_FARGATE === 'true',
     screenshot: async (page, path) => (
         process.env.DEBUG === 'true' ? page.screenshot({ path: path, fullPage: true }) : false
     )

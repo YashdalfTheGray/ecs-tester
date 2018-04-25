@@ -5,6 +5,7 @@ const {
     getConsoleLink,
     login,
     screenshot,
+    isFargateRegion,
     addToManifest
 } = require('../util');
 
@@ -25,7 +26,7 @@ afterEach(() => browser.close());
 
 describe('ec2 first run', () => {
     test('shows up when navigated to', async () => {
-        if (process.env.USE_FARGATE) {
+        if (isFargateRegion()) {
             return;
         }
 
@@ -40,7 +41,7 @@ describe('ec2 first run', () => {
     });
 
     test('finishes out the process', async () => {
-        if (process.env.USE_FARGATE) {
+        if (isFargateRegion()) {
             return;
         }
 

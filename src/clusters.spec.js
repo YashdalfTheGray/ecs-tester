@@ -6,6 +6,7 @@ const {
     getConsoleLink,
     login,
     screenshot,
+    isFargateRegion,
     addToManifest
 } = require('../util');
 
@@ -37,7 +38,7 @@ describe('clusters page', () => {
     });
 
     test('creates an empty cluster in non-fargate region', async () => {
-        if (process.env.USE_FARGATE) {
+        if (isFargateRegion()) {
             return;
         }
 
@@ -73,7 +74,7 @@ describe('clusters page', () => {
     });
 
     test('creates a cluster in non-fargate region', async () => {
-        if (process.env.USE_FARGATE) {
+        if (isFargateRegion()) {
             return;
         }
 
@@ -108,7 +109,7 @@ describe('clusters page', () => {
     });
 
     test('creates an empty fargate cluster in fargate region', async () => {
-        if (!process.env.USE_FARGATE) {
+        if (!isFargateRegion()) {
             return;
         }
 
@@ -143,7 +144,7 @@ describe('clusters page', () => {
     });
 
     test('creates a fargate cluster in fargate region', async () => {
-        if (!process.env.USE_FARGATE) {
+        if (!isFargateRegion()) {
             return;
         }
 
@@ -179,7 +180,7 @@ describe('clusters page', () => {
     });
 
     test('creates an empty ec2 cluster in fargate region', async () => {
-        if (!process.env.USE_FARGATE) {
+        if (!isFargateRegion()) {
             return;
         }
 
@@ -216,7 +217,7 @@ describe('clusters page', () => {
     });
 
     test('creates a ec2 cluster in fargate region', async () => {
-        if (!process.env.USE_FARGATE) {
+        if (!isFargateRegion()) {
             return;
         }
 
