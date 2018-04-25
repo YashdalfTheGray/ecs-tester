@@ -44,6 +44,7 @@ describe('ec2 first run', () => {
             return;
         }
 
+		const clusterName = 'default-ecs-tester';
         const page = await login(browser, consoleLink);
 
         // task def page
@@ -57,6 +58,7 @@ describe('ec2 first run', () => {
         // cluster page
         await page.waitForSelector('[configure-cluster-v2]');
         await page.waitFor(1000); // because we disable our buttons
+		await page.type('awsui-textfield[ng-model="wizardValues.clusterName"] input', clusterName);
         await page.click('.aws-button .btn-primary');
 
         // review page
@@ -73,7 +75,7 @@ describe('ec2 first run', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('taskDefinition', 'console-sample-app-static');
-        await addToManifest('cluster', 'default');
+        await addToManifest('cluster', clusterName);
         await addToManifest('service', 'sample-webapp');
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
 

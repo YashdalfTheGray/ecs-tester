@@ -43,7 +43,7 @@ describe('fargate first run', () => {
         if (!process.env.USE_FARGATE) {
             return;
         }
-
+		const clusterName = 'default-ecs-tester';
         const page = await login(browser, consoleLink);
 
         // containers page
@@ -56,6 +56,7 @@ describe('fargate first run', () => {
 
         // cluster page
         await page.waitForSelector('.first-run-cluster');
+		await page.type('awsui-textfield[ng-model="ctrl.values.name"] input', clusterName);
         await page.click('aws-button[primary-button]');
 
         // review page
@@ -71,7 +72,7 @@ describe('fargate first run', () => {
         const errors = await page.$$('.awsui-icon.alert-exclamation-circle');
 
         await addToManifest('taskDefinition', 'first-run-task-definition');
-        await addToManifest('cluster', 'default');
+        await addToManifest('cluster', clusterName);
         await addToManifest('service', 'sample-app-service');
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-fargate-firstrun.png'));
 
