@@ -26,13 +26,13 @@ Once you have this created, you can either run `npm install` to install all the 
 
 ### Docker easy mode
 
-All you need to do is create the `.env` file like shown above _somewhere_ on your local machine. Then run `docker run -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester`. This will automatically pull the image from DockerHub and run all the tests in the test suite. You can then use the docker commands in results section to peek at the results.
+All you need to do is create the `.env` file like shown above _somewhere_ on your local machine. Then run `docker run --init -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester`. This will automatically pull the image from DockerHub and run all the tests in the test suite. You can then use the docker commands in results section to peek at the results.
 
 ### Locally/Build-Your-Own Docker Image
 
 To run the tests locally, follow the steps above and run `npm test`. This will run the Jest tests using Puppeteer and Chromium headless. Any screenshots will be in the `artifacts` folder.
 
-To run the tests using Docker, run `docker run -it --name <some_name> --env-file .env ecs-tester`. Since the container is running in interactive mode, it will print the test results as they happen.
+To run the tests using Docker, run `docker run --init -it --name <some_name> --env-file .env ecs-tester`. Since the container is running in interactive mode, it will print the test results as they happen.
 
 ## Results
 
