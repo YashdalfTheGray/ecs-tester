@@ -26,7 +26,7 @@ module.exports = {
     getBrowser: async (otherOptions) => {
         let options;
 
-        if (process.env.DEBUG === 'interactive') {
+        if (process.env.DEBUG === 'interactive' && !isDocker()) {
             options = { args: ['--no-sandbox'], headless: false, sloMo: 2000 };
         }
         else {
