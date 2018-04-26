@@ -1,7 +1,7 @@
 const path = require('path');
-const puppeteer = require('puppeteer');
 
 const {
+    getBrowser,
     getConsoleLink,
     login,
     screenshot,
@@ -15,10 +15,7 @@ let consoleLink;
 jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
-    browser = await puppeteer.launch({
-        args: ['--no-sandbox']
-    });
-
+    browser = await getBrowser();
     consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/firstRun');
 });
 

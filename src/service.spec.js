@@ -1,8 +1,8 @@
 const path = require('path');
-const puppeteer = require('puppeteer');
 const { hacker } = require('faker');
 
 const {
+    getBrowser,
     getConsoleLink,
     login,
     screenshot,
@@ -16,13 +16,10 @@ let consoleLink;
 jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
-    browser = await puppeteer.launch({
-        args: ['--no-sandbox']
-    });
+    browser = await getBrowser();
+    consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/clusters');
 
     // need to register a task definition here so that we can use it
-
-    consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/clusters');
 });
 
 afterEach(() => browser.close());

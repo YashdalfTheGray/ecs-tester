@@ -1,9 +1,9 @@
 const path = require('path');
-const puppeteer = require('puppeteer');
 
 const taskDefSample = require('../util/sample-taskdef.json');
 
 const {
+    getBrowser,
     getConsoleLink,
     login,
     screenshot,
@@ -17,10 +17,7 @@ let consoleLink;
 jest.setTimeout(300 * 1000);
 
 beforeEach(async () => {
-    browser = await puppeteer.launch({
-        args: ['--no-sandbox']
-    });
-
+    browser = await getBrowser();
     consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/taskDefinitions');
 });
 

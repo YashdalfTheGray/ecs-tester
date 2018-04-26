@@ -7,6 +7,8 @@ This project relies on Docker but can also be run outside of Docker. You will ne
 
 The first thing to do is to create an IAM user with appropriate rights in your console so that the tests can log on as a user. Then create a file in this directory called `.env` and add seven keys to it. The keys are listed below. The region follows the standard AWS region code format, eg. `us-east-1`. The `USE_FARGATE` key can be used to enable the automated Fargate tests. The `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` are optional. If not provided, resources created by the tests won't be deleted.
 
+The `DEBUG` variable has 3 possible values, `none` which only creates a `manifest.json`, `screenshot` which will take screenshots at the end of each test and `interactive` which will take screenshots and run puppeteer in non-headless mode.
+
 ```
 AWS_ACCOUNT=<your_account_id_or_alias>
 IAM_USERNAME=<your_iam_username>
@@ -15,7 +17,7 @@ ACCESS_KEY_ID=<your_access_key_id>
 SECRET_ACCESS_KEY=<your_secret_access_key>
 REGION=<aws_region>
 USE_FARGATE=<true|false>
-DEBUG=<true|false>
+DEBUG=<none|screenshot|interactive>
 ```
 
 Once you have this created, you can either run `npm install` to install all the dependencies or run `docker build -t ecs-tester .` to build the image.
