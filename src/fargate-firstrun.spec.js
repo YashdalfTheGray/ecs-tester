@@ -46,19 +46,26 @@ describe('fargate first run', () => {
 
         // containers page
         await page.waitForSelector('.first-run-container');
+        await page.waitFor(1000); // because we disable our buttons
         await page.click('aws-button[primary-button]');
 
         // service page
         await page.waitForSelector('.first-run-service');
+        await page.waitFor(1000); // because we disable our buttons
         await page.click('aws-button[primary-button]');
 
         // cluster page
         await page.waitForSelector('.first-run-cluster');
+        await page.evaluate(() => {
+            document.querySelector('awsui-textfield[ng-model="ctrl.values.name"] input').value = '';
+        });
         await page.type('awsui-textfield[ng-model="ctrl.values.name"] input', clusterName);
+        await page.waitFor(1000); // because we disable our buttons
         await page.click('aws-button[primary-button]');
 
         // review page
         await page.waitForSelector('.first-run-review');
+        await page.waitFor(1000); // because we disable our buttons
         await page.click('aws-button[primary-button]');
 
         // launch page

@@ -55,8 +55,12 @@ describe('ec2 first run', () => {
 
         // cluster page
         await page.waitForSelector('[configure-cluster-v2]');
-        await page.waitFor(1000); // because we disable our buttons
+        await page.evaluate(() => {
+            document.querySelector('awsui-textfield[ng-model="wizardValues.clusterName"] input').value = '';
+        });
         await page.type('awsui-textfield[ng-model="wizardValues.clusterName"] input', clusterName);
+        await page.focus('awsui-textfield[ng-model="wizardValues.numberOfInstances"] input'); // Change focus
+        await page.waitFor(1000); // because we disable our buttons
         await page.click('.aws-button .btn-primary');
 
         // review page
