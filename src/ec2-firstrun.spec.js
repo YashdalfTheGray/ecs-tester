@@ -54,6 +54,7 @@ describe('ec2 first run', () => {
 
         // cluster page
         await page.waitForSelector('[configure-cluster-v2]');
+        await page.type('input#awsui-textfield-7', '-ecs-tester');
         await page.waitFor(1000); // because we disable our buttons
         await page.click('.aws-button .btn-primary');
 
@@ -71,8 +72,8 @@ describe('ec2 first run', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('taskDefinition', 'console-sample-app-static');
-        await addToManifest('cluster', 'default');
-        await addToManifest('service', 'sample-webapp');
+        await addToManifest('cluster', 'default-ecs-tester');
+        await addToManifest('service', 'default-ecs-tester/sample-webapp');
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
 
         expect(errors).toHaveLength(0);

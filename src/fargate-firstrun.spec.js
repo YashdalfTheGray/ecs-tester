@@ -54,6 +54,7 @@ describe('fargate first run', () => {
 
         // cluster page
         await page.waitForSelector('.first-run-cluster');
+        await page.type('input#awsui-textfield-5', '-ecs-tester');
         await page.click('aws-button[primary-button]');
 
         // review page
@@ -69,8 +70,8 @@ describe('fargate first run', () => {
         const errors = await page.$$('.awsui-icon.alert-exclamation-circle');
 
         await addToManifest('taskDefinition', 'first-run-task-definition');
-        await addToManifest('cluster', 'default');
-        await addToManifest('service', 'sample-app-service');
+        await addToManifest('cluster', 'default-ecs-tester');
+        await addToManifest('service', 'default-ecs-tester/sample-app-service');
         await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-fargate-firstrun.png'));
 
         expect(errors).toHaveLength(0);
