@@ -34,7 +34,7 @@ describe('repositories page', () => {
     });
 
     test('finishes out the flow', async () => {
-        const repoName = `repo-${hacker.verb()}`;
+        const repoName = `repo-${hacker.verb().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // repositories page

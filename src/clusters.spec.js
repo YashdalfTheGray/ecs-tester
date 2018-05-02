@@ -39,7 +39,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -75,7 +75,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -110,7 +110,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -145,7 +145,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -181,7 +181,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
@@ -218,7 +218,7 @@ describe('clusters page', () => {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
         // clusters page
