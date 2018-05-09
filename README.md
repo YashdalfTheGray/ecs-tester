@@ -5,7 +5,7 @@ Integration testing with Puppeteer, Chromium headless, Jest and Docker!
 
 This project relies on Docker but can also be run outside of Docker. You will need Docker 1.13.0 CE and/or a Node.js 8.6 or newer and npm v5.6 or newer to run this project.
 
-The first thing to do is to create an IAM user with appropriate rights in your console so that the tests can log on as a user. Then create a file in this directory called `.env` and add seven keys to it. The keys are listed below. The region follows the standard AWS region code format, eg. `us-east-1`. The `USE_FARGATE` key can be used to enable the automated Fargate tests. The `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` are optional. If not provided, resources created by the tests won't be deleted.
+The first thing to do is to create an IAM user with appropriate rights in your console so that the tests can log on as a user. Then create a file in this directory called `.env` and add eight keys to it. The keys are listed below. The region follows the standard AWS region code format, eg. `us-east-1`. The `USE_FARGATE` key can be used to enable the automated Fargate tests. The `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` are optional. If not provided, resources created by the tests won't be deleted.
 
 The `DEBUG` variable has 3 possible values, `none` which only creates a `manifest.json`, `screenshot` which will take screenshots at the end of each test and `interactive` which will take screenshots and run puppeteer in non-headless mode.
 
