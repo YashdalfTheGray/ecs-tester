@@ -37,6 +37,34 @@ describe('ec2 first run', () => {
         expect(content.length).not.toBe(0);
     });
 
+    test('runs through the wizard', async () => {
+        if (isFargateRegion()) {
+            return;
+        }
+
+        const page = await login(browser, consoleLink);
+
+        // task def page
+        await page.waitForSelector('[create-first-task-definition-v2]');
+        await page.click('.aws-button .btn-primary');
+
+        // service page
+        await page.waitForSelector('[configure-runtime-v2]');
+        await page.click('.aws-button .btn-primary');
+
+        // cluster page
+        await page.waitForSelector('[configure-cluster-v2]');
+        await page.type('input#awsui-textfield-7', '-ecs-tester');
+        await page.click('label.awsui-control-group-label');
+        await page.waitFor(1000); // because we disable our buttons
+        await page.click('aws-button[primary-button] > div.aws-button.btn-wrapper');
+
+        // review page
+        await page.waitForSelector('[review-first-run-v2]');
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
+    });
+
     test('finishes out the process', async () => {
         if (isFargateRegion()) {
             return;
@@ -55,6 +83,7 @@ describe('ec2 first run', () => {
         // cluster page
         await page.waitForSelector('[configure-cluster-v2]');
         await page.type('input#awsui-textfield-7', '-ecs-tester');
+        await page.click('label.awsui-control-group-label');
         await page.waitFor(1000); // because we disable our buttons
         await page.click('.aws-button .btn-primary');
 
