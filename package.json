@@ -4,6 +4,7 @@
   "description": "integration tests using headless chrome and docker",
   "main": "index.js",
   "scripts": {
+    "pretest": "npm run clean",
     "test": "jest",
     "start": "npm test",
     "linter": "eslint .",
