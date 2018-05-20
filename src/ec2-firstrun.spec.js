@@ -62,7 +62,7 @@ describe('ec2 first run', () => {
         // review page
         await page.waitForSelector('[review-first-run-v2]');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-ec2-firstrun-wizard.png'));
     });
 
     test('finishes out the process', async () => {

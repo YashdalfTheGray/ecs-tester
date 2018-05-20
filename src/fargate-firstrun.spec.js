@@ -37,6 +37,32 @@ describe('fargate first run', () => {
         expect(content.length).not.toBe(0);
     });
 
+    test('runs through the wizard', async () => {
+        if (!isFargateRegion()) {
+            return;
+        }
+
+        const page = await login(browser, consoleLink);
+
+        // containers page
+        await page.waitForSelector('.first-run-container');
+        await page.click('aws-button[primary-button]');
+
+        // service page
+        await page.waitForSelector('.first-run-service');
+        await page.click('aws-button[primary-button]');
+
+        // cluster page
+        await page.waitForSelector('.first-run-cluster');
+        await page.type('awsui-control-group[label="Cluster name"] input', '-ecs-tester');
+        await page.click('aws-button[primary-button]');
+
+        // review page
+        await page.waitForSelector('.first-run-review');
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-fargate-firstrun-wizard.png'));
+    });
+
     test('finishes out the process', async () => {
         if (!isFargateRegion()) {
             return;
@@ -54,7 +80,7 @@ describe('fargate first run', () => {
 
         // cluster page
         await page.waitForSelector('.first-run-cluster');
-        await page.type('input#awsui-textfield-5', '-ecs-tester');
+        await page.type('awsui-control-group[label="Cluster name"] input', '-ecs-tester');
         await page.click('aws-button[primary-button]');
 
         // review page
