@@ -14,7 +14,7 @@ module.exports = async (browser, url) => {
     await page.type('#accountFields #password', IAM_PASSWORD);
     await page.click('a#signin_button');
 
-    await page.setViewport({ height: 768, width: 1024 });
+    await page.setViewport({ height: 768, width: 1200 });
 
     return page;
 };
