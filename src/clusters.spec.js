@@ -34,6 +34,91 @@ describe('clusters page', () => {
         expect(content.length).not.toBe(0);
     });
 
+    test('runs through the ec2 cluster wizard', async () => {
+        if (isFargateRegion()) {
+            return;
+        }
+
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('aws-button[primary-button]');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-select[items="role.options"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('label.awsui-control-group-label');
+
+        const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-ec2-cluster-flow.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
+    test('runs through the fargate cluster wizard', async () => {
+        if (!isFargateRegion()) {
+            return;
+        }
+
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('aws-button[primary-button]');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-control-group[label="Create VPC"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('awsui-control-group[label="Create VPC"] awsui-checkbox');
+
+        const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-fargate-cluster-flow.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
+    test('runs through the ec2 cluster wizard when fargate enabled', async () => {
+        if (!isFargateRegion()) {
+            return;
+        }
+
+        const clusterName = `cluster-${hacker.noun().replace(/ /g, '-')}`;
+        const page = await login(browser, consoleLink);
+
+        // clusters page
+        await page.waitForSelector('awsui-button#create-cluster-button');
+        await page.click('awsui-button#create-cluster-button');
+
+        // cluster type page
+        await page.waitForSelector('div#create-cluster-ec2-card');
+        await page.click('div#create-cluster-ec2-card');
+        await page.click('aws-button[primary-button]');
+
+        // create cluster page
+        await page.waitForSelector('awsui-select[items="role.options"]');
+        await page.type('input#awsui-textfield-0', clusterName);
+        await page.click('label.awsui-control-group-label');
+
+        const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-ec2-cluster-flow-in-fargate.png'));
+
+        expect(errors).toHaveLength(0);
+    });
+
     test('creates an empty cluster in non-fargate region', async () => {
         if (isFargateRegion()) {
             return;
