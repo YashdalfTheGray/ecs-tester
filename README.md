@@ -28,6 +28,8 @@ Once you have this created, you can either run `npm install` to install all the 
 
 All you need to do is create the `.env` file like shown above _somewhere_ on your local machine. Then run `docker run --init -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester`. This will automatically pull the image from DockerHub and run all the tests in the test suite. You can then use the docker commands in results section to peek at the results.
 
+There is a Docker tag called `nocreate` that only runs the tests tagged with `@read-only`. In other words, these tests don't create anything and are good for a quick sanity check for the console. Run the read-only tests using `docker run --init -it --name <some_name> --env-file <path_to_env_file> yashdalfthegray/ecs-tester:nocreate`. 
+
 ### Locally/Build-Your-Own Docker Image
 
 To run the tests locally, follow the steps above and run `npm test`. This will run the Jest tests using Puppeteer and Chromium headless. Any screenshots will be in the `artifacts` folder.
