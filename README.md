@@ -48,6 +48,21 @@ You can access the screenshots and the manifest file by copying them out of the 
 
 Jest parallelizes the tests that it runs so it doesn't know up front what tests to run or which ones to not. You can use `describe.only` or `test.only` to focus tests within the same module but Jest will still run the other test modules. To specifically focus on one module, run `npm test -- -t "<name_of_describe>"`. The `-t` flag only runs one spec.
 
+## Running all tests witha a specific tag
+
+All the tests in the suite have tags associated with them as can be seen by the list of space-delimited `@` tags after the name of the test. This can be used to filter tests down to focus on one area of the console or one type of test. The valid tags are listed below.
+
+* `@read-only`
+* `@create`
+* `@ec2`
+* `@fargate`
+* `clusters`
+* `@repositories`
+* `@firstrun`
+* `@taskdef`
+
+The tests with a tag can be run using `npm test -- -t "<tag_name>"`. You can add the `--verbose` flag to the command to see which tests are going to be run if required. 
+
 ## Puppeteer version
 This project depends specifically on Puppeteer v0.13.0 because of a CSP issue with version 1.0.0 and newer. [This issue on the repository](https://github.com/GoogleChrome/puppeteer/issues/1229) and this [sandbox demo](https://puppeteersandbox.com/S0HVfA1j) has more information.
 
