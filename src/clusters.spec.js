@@ -23,18 +23,18 @@ beforeEach(async () => {
 afterEach(() => browser.close());
 
 describe('clusters page', () => {
-    test('shows up when navigated to', async () => {
+    test('shows up when navigated to [@read-only @clusters @ec2 @fargate]', async () => {
         const page = await login(browser, consoleLink);
 
         await page.waitForSelector('awsui-button#create-cluster-button');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/clusters-page.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-cluster.png'));
 
         expect(content.length).not.toBe(0);
     });
 
-    test('runs through the ec2 cluster wizard', async () => {
+    test('runs through the ec2 cluster wizard [@read-only @clusters @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -57,12 +57,12 @@ describe('clusters page', () => {
 
         const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-ec2-cluster-flow.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-cluster-ec2.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('runs through the fargate cluster wizard', async () => {
+    test('runs through the fargate cluster wizard [@read-only @clusters @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -85,12 +85,12 @@ describe('clusters page', () => {
 
         const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-fargate-cluster-flow.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-cluster-fargate.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('runs through the ec2 cluster wizard when fargate enabled', async () => {
+    test('runs through the ec2 cluster wizard when fargate enabled [@read-only @clusters @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -114,12 +114,12 @@ describe('clusters page', () => {
 
         const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-ec2-cluster-flow-in-fargate.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-cluster-ec2.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('creates an empty cluster in non-fargate region', async () => {
+    test('creates an empty cluster in non-fargate region [@create @clusters @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -150,12 +150,12 @@ describe('clusters page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-ec2-cluster.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-cluster-ec2-empty.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('creates a cluster in non-fargate region', async () => {
+    test('creates a cluster in non-fargate region [@create @clusters @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -185,12 +185,12 @@ describe('clusters page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-cluster.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-cluster-ec2.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('creates an empty fargate cluster in fargate region', async () => {
+    test('creates an empty fargate cluster in fargate region [@create @clusters @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -220,12 +220,12 @@ describe('clusters page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-fargate-cluster.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-cluster-fargate-empty.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('creates a fargate cluster in fargate region', async () => {
+    test('creates a fargate cluster in fargate region [@create @clusters @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -256,12 +256,12 @@ describe('clusters page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/fargate-cluster.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-cluster-fargate.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('creates an empty ec2 cluster in fargate region', async () => {
+    test('creates an empty ec2 cluster in fargate region [@create @clusters @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -293,12 +293,12 @@ describe('clusters page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/empty-ec2-cluster.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-cluster-ec2-empty.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('creates a ec2 cluster in fargate region', async () => {
+    test('creates a ec2 cluster in fargate region [@create @clusters @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -329,7 +329,7 @@ describe('clusters page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-cluster.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-cluster-ec2.png'));
 
         expect(errors).toHaveLength(0);
     });

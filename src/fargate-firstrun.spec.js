@@ -22,7 +22,7 @@ beforeEach(async () => {
 afterEach(() => browser.close());
 
 describe('fargate first run', () => {
-    test('shows up when navigated to', async () => {
+    test('shows up when navigated to [@read-only @firstrun @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -32,12 +32,12 @@ describe('fargate first run', () => {
         await page.waitForSelector('.first-run-container');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/fargate-firstrun.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-firstrun.png'));
 
         expect(content.length).not.toBe(0);
     });
 
-    test('runs through the wizard', async () => {
+    test('runs through the wizard [@read-only @firstrun @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -60,10 +60,10 @@ describe('fargate first run', () => {
         // review page
         await page.waitForSelector('.first-run-review');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-fargate-firstrun-wizard.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-firstrun.png'));
     });
 
-    test('finishes out the process', async () => {
+    test('finishes out the process [@create @firstrun @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -98,7 +98,7 @@ describe('fargate first run', () => {
         await addToManifest('taskDefinition', 'first-run-task-definition');
         await addToManifest('cluster', 'default-ecs-tester');
         await addToManifest('service', 'default-ecs-tester/sample-app-service');
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-fargate-firstrun.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-firstrun.png'));
 
         expect(errors).toHaveLength(0);
     });

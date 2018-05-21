@@ -22,7 +22,7 @@ beforeEach(async () => {
 afterEach(() => browser.close());
 
 describe('ec2 first run', () => {
-    test('shows up when navigated to', async () => {
+    test('shows up when navigated to [@read-only @firstrun @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -32,12 +32,12 @@ describe('ec2 first run', () => {
         await page.waitForSelector('[create-first-task-definition-v2]');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-firstrun.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-firstrun.png'));
 
         expect(content.length).not.toBe(0);
     });
 
-    test('runs through the wizard', async () => {
+    test('runs through the wizard [@read-only @firstrun @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -62,10 +62,10 @@ describe('ec2 first run', () => {
         // review page
         await page.waitForSelector('[review-first-run-v2]');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-ec2-firstrun-wizard.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-firstrun.png'));
     });
 
-    test('finishes out the process', async () => {
+    test('finishes out the process [@create @firstrun @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -103,7 +103,7 @@ describe('ec2 first run', () => {
         await addToManifest('taskDefinition', 'console-sample-app-static');
         await addToManifest('cluster', 'default-ecs-tester');
         await addToManifest('service', 'default-ecs-tester/sample-webapp');
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/finished-ec2-firstrun.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-firstrun.png'));
 
         expect(errors).toHaveLength(0);
     });

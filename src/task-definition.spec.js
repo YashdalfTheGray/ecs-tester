@@ -24,18 +24,18 @@ beforeEach(async () => {
 afterEach(() => browser.close());
 
 describe('taskdef page', () => {
-    test('shows up when navigated to', async () => {
+    test('shows up when navigated to [@read-only @taskdef @ec2 @fargate]', async () => {
         const page = await login(browser, consoleLink);
 
         await page.waitForSelector('awsui-button#create-new-task-def-button');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/taskdef-page.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-taskdef.png'));
 
         expect(content.length).not.toBe(0);
     });
 
-    test('creates a new task def revision in non-fargate region', async () => {
+    test('creates a new task def revision in non-fargate region [@create @taskdef @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
@@ -65,12 +65,12 @@ describe('taskdef page', () => {
         const success = await page.$$('awsui-alert[type="success"]');
 
         await addToManifest('taskDefinition', 'ecs-tester-taskdef');
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-ec2-taskdef.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-taskdef-ec2.png'));
 
         expect(success).toHaveLength(1);
     });
 
-    test('creates a new task def revision in fargate region', async () => {
+    test('creates a new task def revision in fargate region [@create @taskdef @fargate]', async () => {
         if (!isFargateRegion()) {
             return;
         }
@@ -107,7 +107,7 @@ describe('taskdef page', () => {
         const errors = await page.$$('awsui-alert[type="error"]');
 
         await addToManifest('taskDefinition', 'ecs-tester-taskdef');
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-fargate-taskdef.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-taskdef-fargate.png'));
 
         expect(errors).toHaveLength(0);
     });

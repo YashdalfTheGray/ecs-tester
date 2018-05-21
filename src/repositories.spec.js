@@ -22,18 +22,18 @@ beforeEach(async () => {
 afterEach(() => browser.close());
 
 describe('repositories page', () => {
-    test('shows up when navigated to', async () => {
+    test('shows up when navigated to [@read-only @repositories]', async () => {
         const page = await login(browser, consoleLink);
 
         await page.waitForSelector('awsui-button#create-repository-button');
         const content = await page.content();
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/repositories-page.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-repository.png'));
 
         expect(content.length).not.toBe(0);
     });
 
-    test('runs through the flow', async () => {
+    test('runs through the flow [@read-only @repositories]', async () => {
         const repoName = `repo-${hacker.verb().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
@@ -56,12 +56,12 @@ describe('repositories page', () => {
 
         const errors = await page.$$('.awsui-control-group-controls > .awsui-control-group-validation-message');
 
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/completed-repository-flow.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-repository.png'));
 
         expect(errors).toHaveLength(0);
     });
 
-    test('finishes out the flow', async () => {
+    test('finishes out the flow [@create @repositories]', async () => {
         const repoName = `repo-${hacker.verb().replace(/ /g, '-')}`;
         const page = await login(browser, consoleLink);
 
@@ -88,7 +88,7 @@ describe('repositories page', () => {
         const content = await page.content();
 
         await addToManifest('repository', repoName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/repository.png'));
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-repository.png'));
 
         expect(content.length).not.toBe(0);
     });
