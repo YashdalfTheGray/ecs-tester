@@ -1,5 +1,5 @@
 const path = require('path');
-// const { hacker } = require('faker');
+const { hacker } = require('faker');
 
 const { getEcsClient } = require('../util');
 
@@ -55,18 +55,49 @@ afterEach(async () => {
 });
 
 describe('services page', () => {
-    test('shows up when navigated to [@read-only @services @ec2]', async () => {
-        if (isFargateRegion()) {
-            return;
-        }
-
-        // const serviceName = `cluster-${hacker.noun()}`;
+    test('shows up when navigated to [@read-only @services @ec2 @fargate]', async () => {
         const page = await login(browser, consoleLink);
 
         await page.waitForSelector('[ecs-cluster-services]');
         const content = await page.content();
 
         await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-service.png'));
+
+        expect(content).not.toHaveLength(0);
+    });
+
+    test('runs through ec2 service creation [@read-only @services @ec2]', async () => {
+        if (isFargateRegion()) {
+            return;
+        }
+
+        const serviceName = `service-${hacker.noun()}`;
+        const page = await login(browser, consoleLink);
+
+        // list services
+        await page.waitForSelector('[ecs-cluster-services]');
+        await page.click('awsui-button[text="Create"]');
+
+        // create service step 1
+        await page.waitForSelector('[ecs-service-required-config]');
+        await page.type('awsui-textfield[ng-model="config.serviceName"] > input', serviceName);
+        await page.type('awsui-textfield[ng-model="config.desiredCount"] > input', '0');
+        await page.click('label.awsui-control-group-label');
+        await page.click('aws-button div.btn.btn-primary');
+
+        // create service step 2
+        await page.waitForSelector('[network-config]');
+        await page.click('aws-button div.btn.btn-primary');
+
+        // create service step 3
+        await page.waitForSelector('[asg-config]');
+        await page.click('aws-button div.btn.btn-primary');
+
+        // create service review
+        await page.waitForSelector('[ecs-review-create-service]');
+        const content = await page.content();
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/complete-service.png'));
 
         expect(content).not.toHaveLength(0);
     });
