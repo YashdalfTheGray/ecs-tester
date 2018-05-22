@@ -101,4 +101,41 @@ describe('services page', () => {
 
         expect(content).not.toHaveLength(0);
     });
+
+    test.skip('finishes ec2 service creation [@create @services @ec2]', async () => {
+        if (isFargateRegion()) {
+            return;
+        }
+
+        const serviceName = `service-${hacker.noun()}`;
+        const page = await login(browser, consoleLink);
+
+        // list services
+        await page.waitForSelector('[ecs-cluster-services]');
+        await page.click('awsui-button[text="Create"]');
+
+        // create service step 1
+        await page.waitForSelector('[ecs-service-required-config]');
+        await page.type('awsui-textfield[ng-model="config.serviceName"] > input', serviceName);
+        await page.type('awsui-textfield[ng-model="config.desiredCount"] > input', '0');
+        await page.click('label.awsui-control-group-label');
+        await page.click('aws-button div.btn.btn-primary');
+
+        // create service step 2
+        await page.waitForSelector('[network-config]');
+        await page.click('aws-button div.btn.btn-primary');
+
+        // create service step 3
+        await page.waitForSelector('[asg-config]');
+        await page.click('aws-button div.btn.btn-primary');
+
+        // create service review
+        await page.waitForSelector('[ecs-review-create-service]');
+        await page.click('aws-button div.btn.btn-primary');
+        const content = await page.content();
+
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/created-service.png'));
+
+        expect(content).not.toHaveLength(0);
+    });
 });
