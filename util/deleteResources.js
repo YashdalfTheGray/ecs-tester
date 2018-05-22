@@ -1,4 +1,4 @@
-const { ECR, ECS } = require('aws-sdk');
+const { getEcrClient, getEcsClient } = require('.');
 
 module.exports = async (manifest) => {
     const { ACCESS_KEY_ID, SECRET_ACCESS_KEY } = process.env;
@@ -22,11 +22,7 @@ module.exports = async (manifest) => {
 };
 
 const deleteCluster = async (r) => {
-    const ecs = new ECS({
-        accessKeyId: process.env.ACCESS_KEY_ID,
-        secretAccessKey: process.env.SECRET_ACCESS_KEY,
-        region: process.env.REGION
-    });
+    const ecs = getEcsClient();
 
     // 1. find CloudFormation stack
     // 2. find all services
@@ -42,8 +38,5 @@ const deleteCluster = async (r) => {
     return Promise.resolve(r);
 };
 
-const deleteRespository = async r => new ECR({
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    region: process.env.REGION
-}).deleteRepository({ force: true, repositoryName: r.name }).promise();
+const deleteRespository = async r =>
+    getEcrClient().deleteRepository({ force: true, repositoryName: r.name }).promise();

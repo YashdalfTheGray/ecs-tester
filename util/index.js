@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const isDocker = require('is-docker');
 const puppeteer = require('puppeteer');
+const { ECR, ECS } = require('aws-sdk');
 
 const login = require('./login');
 const addToManifest = require('./addToManifest');
@@ -34,5 +35,15 @@ module.exports = {
         }
 
         return puppeteer.launch(Object.assign(options, otherOptions));
-    }
+    },
+    getEcsClient: () => new ECS({
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY,
+        region: process.env.REGION
+    }),
+    getEcrClient: () => new ECR({
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY,
+        region: process.env.REGION
+    })
 };
