@@ -1,134 +1,73 @@
 const path = require('path');
-const { hacker } = require('faker');
+// const { hacker } = require('faker');
+
+const { getEcsClient } = require('../util');
 
 const {
     getBrowser,
     getConsoleLink,
-    login,
     screenshot,
-    isFargateRegion,
-    addToManifest
+    login,
+    isFargateRegion
 } = require('../util');
+
+const clusterName = 'ecs-tester-services';
+const taskDef = {
+    family: 'ecs-tester-taskdef',
+    networkMode: 'awsvpc',
+    containerDefinitions: [{
+        name: 'test-container',
+        image: 'nginx',
+        memoryReservation: '256',
+        portMappings: [{ containerPort: 80, protocol: 'tcp' }]
+    }],
+    requiresCompatibilities: ['EC2', 'FARGATE'],
+    cpu: '256',
+    memory: '512'
+};
 
 let browser;
 let consoleLink;
+let ecs;
 
 jest.setTimeout(900 * 1000);
 
 beforeEach(async () => {
-    browser = await getBrowser();
-    consoleLink = getConsoleLink(process.env.REGION, 'ecs', '/clusters');
+    ecs = getEcsClient();
 
-    // need to register a task definition here so that we can use it
+    // await ecs.registerTaskDefinition(taskDef).promise();
+    try {
+        await ecs.describeTaskDefinition({ taskDefinition: taskDef.family }).promise();
+    }
+    catch (e) {
+        await ecs.registerTaskDefinition(taskDef).promise();
+    }
+
+    await ecs.createCluster({ clusterName }).promise();
+
+    browser = await getBrowser();
+    consoleLink = getConsoleLink(process.env.REGION, 'ecs', `/clusters/${clusterName}`);
 });
 
-afterEach(() => browser.close());
+afterEach(async () => {
+    await ecs.deleteCluster({ cluster: clusterName }).promise();
+    await browser.close();
+});
 
-describe.skip('services page', () => {
-    test('creates a service in a non-fargate region', async () => {
+describe('services page', () => {
+    test('shows up when navigated to [@read-only @services @ec2]', async () => {
         if (isFargateRegion()) {
             return;
         }
 
-        const clusterName = `cluster-${hacker.noun()}`;
+        // const serviceName = `cluster-${hacker.noun()}`;
         const page = await login(browser, consoleLink);
 
-        // clusters page
-        await page.waitForSelector('awsui-button#create-cluster-button');
-        await page.click('awsui-button#create-cluster-button');
+        await page.waitForSelector('[ecs-cluster-services]');
+        const content = await page.content();
 
-        // cluster type page
-        await page.waitForSelector('aws-button[primary-button]');
-        await page.click('aws-button[primary-button]');
+        await screenshot(page, path.resolve(process.cwd(), './artifacts/initial-service.png'));
 
-        // create cluster page
-        await page.waitForSelector('awsui-select[items="role.options"]');
-        await page.type('input#awsui-textfield-0', clusterName);
-        await page.click('aws-button[primary-button]');
-
-        // launch status page
-        await page.waitForSelector('[configure-cluster-launch-status]');
-        await page.waitFor(
-            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 600 * 1000 }
-        );
-        const errors = await page.$$('awsui-alert[type="error"]');
-
-        await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-cluster.png'));
-
-        expect(errors).toHaveLength(0);
-    });
-
-    test('creates a fargate service in fargate region', async () => {
-        if (!isFargateRegion()) {
-            return;
-        }
-
-        const clusterName = `cluster-${hacker.noun()}`;
-        const page = await login(browser, consoleLink);
-
-        // clusters page
-        await page.waitForSelector('awsui-button#create-cluster-button');
-        await page.click('awsui-button#create-cluster-button');
-
-        // cluster type page
-        await page.waitForSelector('aws-button[primary-button]');
-        await page.click('aws-button[primary-button]');
-
-        // create cluster page
-        await page.waitForSelector('awsui-control-group[label="Create VPC"]');
-        await page.type('input#awsui-textfield-0', clusterName);
-        await page.click('awsui-control-group[label="Create VPC"] awsui-checkbox');
-        await page.click('aws-button[primary-button]');
-
-        // launch status page
-        await page.waitForSelector('[configure-cluster-launch-status]');
-        await page.waitFor(
-            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 600 * 1000 }
-        );
-        const errors = await page.$$('awsui-alert[type="error"]');
-
-        await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/fargate-cluster.png'));
-
-        expect(errors).toHaveLength(0);
-    });
-
-    test('creates an ec2 service in fargate region', async () => {
-        if (!isFargateRegion()) {
-            return;
-        }
-
-        const clusterName = `cluster-${hacker.noun()}`;
-        const page = await login(browser, consoleLink);
-
-        // clusters page
-        await page.waitForSelector('awsui-button#create-cluster-button');
-        await page.click('awsui-button#create-cluster-button');
-
-        // cluster type page
-        await page.waitForSelector('aws-button[primary-button]');
-        await page.click('div#create-cluster-ec2-card');
-        await page.click('aws-button[primary-button]');
-
-        // create cluster page
-        await page.waitForSelector('awsui-select[items="role.options"]');
-        await page.type('input#awsui-textfield-0', clusterName);
-        await page.click('aws-button[primary-button]');
-
-        // launch status page
-        await page.waitForSelector('[configure-cluster-launch-status]');
-        await page.waitFor(
-            () => !document.querySelectorAll('awsui-alert[type="info"]').length,
-            { timeout: 600 * 1000 }
-        );
-        const errors = await page.$$('awsui-alert[type="error"]');
-
-        await addToManifest('cluster', clusterName);
-        await screenshot(page, path.resolve(process.cwd(), './artifacts/ec2-cluster.png'));
-
-        expect(errors).toHaveLength(0);
+        expect(content).not.toHaveLength(0);
     });
 });
