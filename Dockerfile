@@ -17,4 +17,4 @@ RUN npm install
 
 COPY . /usr/app
 
-CMD ["npm", "test"]
+CMD ["npm", "test", "--verbose"]
