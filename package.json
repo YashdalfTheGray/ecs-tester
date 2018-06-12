@@ -22,6 +22,7 @@
   "homepage": "https://github.com/yashdalfthegray/ecs-tester#readme",
   "dependencies": {
     "aws-sdk": "~2.224.1",
+    "cluster-cleanup": "~1.0.0",
     "dotenv": "~5.0.1",
     "faker": "~4.1.0",
     "is-docker": "~1.1.0",
