@@ -1,6 +1,6 @@
 const { ClusterCleanup } = require('cluster-cleanup');
 
-const { getEcrClient } = require('.');
+const { getEcrClient, getEcsClient } = require('.');
 
 module.exports = async (manifest) => {
     const { ACCESS_KEY_ID, SECRET_ACCESS_KEY } = process.env;
@@ -17,6 +17,7 @@ module.exports = async (manifest) => {
         case 'repository':
             return deleteRespository(r);
         case 'taskDefinition':
+            return deregisterTaskDef(r);
         default:
             return Promise.resolve();
         }
@@ -41,6 +42,18 @@ const deleteCluster = async (r) => {
             reject(error);
         });
     });
+};
+
+const deregisterTaskDef = async (r) => {
+    const ecs = getEcsClient();
+
+    const describeResponse = await ecs.describeTaskDefinition({
+        taskDefinition: r.name
+    }).promise();
+
+    return ecs.deregisterTaskDefinition({
+        taskDefinition: describeResponse.taskDefinition.taskDefinitionArn
+    }).promise();
 };
 
 const deleteRespository = async r =>
