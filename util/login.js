@@ -7,6 +7,7 @@ module.exports = async (browser, url) => {
     await page.waitForSelector('#resolver_container #resolving_input');
     await page.type('#resolver_container #resolving_input', AWS_ACCOUNT);
     await page.click('b.awsui-text-normal');
+    await page.waitFor(1000);
     await page.click('button#next_button');
 
     // IAM account login page
